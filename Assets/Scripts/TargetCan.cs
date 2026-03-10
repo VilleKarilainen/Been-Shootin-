@@ -5,8 +5,10 @@ public class TargetCan : MonoBehaviour
     public int health;
     private Rigidbody2D rb;
     private SpriteRenderer sr;
+    private GunScript gunScript; 
     void Start()
     {
+        gunScript = Object.FindAnyObjectByType<GunScript>();
         sr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         //randomize can health
@@ -39,6 +41,10 @@ public class TargetCan : MonoBehaviour
     }
     void OnMouseDown() 
     {
+        // check if you have bullets, then the can gets hit
+        if(gunScript.ammo > 0)
+        {
+        
         health--;
         ColorCheck();
         if (health <= 0)
@@ -47,16 +53,17 @@ public class TargetCan : MonoBehaviour
         }
         else
         {
-            //if(health<=2)
+            
             // "Pops" the can when it's hit
             Vector2 bounce = new Vector2(Random.Range(-10f, 10f), Random.Range(0f, 7f));
             rb.linearVelocity = bounce;
 
             //adds spin to the can when shot
-            rb.AddTorque(Random.Range(-10f, 10f), ForceMode2D.Impulse);
+            rb.AddTorque(Random.Range(-5f, 5f), ForceMode2D.Impulse);
 
         }
         Debug.Log("Can shot! remaining health: "+health);
+        }
         
     }
 }

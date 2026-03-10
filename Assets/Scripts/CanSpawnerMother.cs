@@ -12,8 +12,22 @@ public class CanSpawnerMother : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && !CansAreSpawning)
         {
             CansAreSpawning = true;
-            InvokeRepeating("SpawnRandomCan",0f, 3f);
+            InvokeRepeating("SpawnLogic",0f, 3f);
+            
         }        
+    }
+    void SpawnLogic()
+    {
+        // Always spawn the first can
+        SpawnRandomCan();
+
+        // 20% chance to spawn a second "Bonus" can
+        if (Random.value < 0.2f) 
+        {
+            // Add a tiny random delay so they don't overlap perfectly in the air
+            float tinyDelay = Random.Range(0.1f, 0.5f);
+            Invoke("SpawnRandomCan", tinyDelay);
+        }
     }
     void SpawnRandomCan()
     {

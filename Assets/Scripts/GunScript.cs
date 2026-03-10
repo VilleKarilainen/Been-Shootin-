@@ -10,11 +10,17 @@ public class GunScript : MonoBehaviour
     public GameObject[] bulletIcons;
     public GameObject reloadUI;
     public Slider reloadBar;
+    public float reloadTime;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         isReloading = false;
         reloadUI.SetActive(false);
+        reloadTime = 1.0f;
+        if (reloadBar != null)
+        {
+            reloadBar.maxValue = reloadTime;
+        }
     }
     void Update()
     {
@@ -31,7 +37,11 @@ public class GunScript : MonoBehaviour
         {
             StartCoroutine(Reload());
         }
-        //add automatic reload if ammo = 0;
+        if (ammo == 0)
+        {
+            StartCoroutine(Reload());
+        }
+        
     }
     
     void Shoot()
@@ -54,7 +64,7 @@ public class GunScript : MonoBehaviour
         Debug.Log("Started reload");
 
         //Reload UI here
-        while (timer < 2.0f)
+        while (timer < reloadTime)
         {
             timer += Time.deltaTime;
             reloadBar.value = timer;
